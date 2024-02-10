@@ -25,7 +25,7 @@ class HouseService {
   }
 
   static getHouse(id) {
-    return $.get(this.url + '/${id}');
+    return $.get(this.url + `/${id}`);
   }
 
   static createHouse(house) {
@@ -34,7 +34,7 @@ class HouseService {
 
   static updateHouse(house) {
     return $.ajax({
-      url: this.url + '/${house._id}',
+      url: this.url + `/${house._id}`,
       dataType: 'json',
       data: JSON.stringify(house),
       contentType: 'application/json',
@@ -44,7 +44,7 @@ class HouseService {
 
   static deleteHouse(id) {
     return $.ajax ({
-      url: this.url + '/${id}',
+      url: this.url + `/${id}`,
       type: 'DELETE',
 
     });
