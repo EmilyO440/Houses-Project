@@ -59,6 +59,14 @@ class DOMManager {
     HouseService.getALLHouses().then(houses => this.render(houses));
   }
 
+  static deleteHouse(id) {
+    HouseService.deleteHouse(id)
+    .then(() => {
+      return HouseService.getALLHouses();
+    })
+    .then((houses) => this.render(houses));
+  }
+
   static render(houses) {
     this.houses = houses;
     $('#app').empty();
