@@ -1,10 +1,10 @@
 class House {
-  constructor(name){
+  constructor(name) {
     this.name = name;
     this.rooms = [];
   }
 
-  addRoom(name , area) {
+  addRoom(name, area) {
     this.rooms.push(new Room(name, area));
 
   }
@@ -43,7 +43,7 @@ class HouseService {
   }
 
   static deleteHouse(id) {
-    return $.ajax ({
+    return $.ajax({
       url: this.url + `/${id}`,
       type: 'DELETE',
 
@@ -64,14 +64,35 @@ class DOMManager {
     $('#app').empty();
     for (let house of houses) {
       $('#app').prepend(
-      `<div id="${house._id}" class = "card">
+        `<div id="${house._id}" class = "card">
           <div class="card-header">
           <h2>${house.name}</h2>
-         </div>
-        </div>
+          <button class= "btn btn-danger" onclick= "DOMManager.deleteHouse('${house.id}')">Delete</button></div>
 
-      `
-      )
+          <div class="card-body">
+            <div class = "card">
+              <div class ="row">
+                <div class="col-sm">
+                  <input type= "text" id=${house._id}-room-name" class ="form-control" placeholder="Room Name">
+                </div>
+                <div class="col-sm">
+                <input type= "text" id=${house._id}-room-area" class="form-control" placeholder="Room Area">
+                </div>
+              </div>
+              <button id=${house._id}-new-room" onclick="DOMManager.addRoom('${house._id}') class= "btn btn-primary form-control"> Add</button>
+         </div>
+        </div><br>`
+      );
+
+        for(let room of house.rooms) {
+          $(`#${house._id}`).find('.card-body').append(
+            `<p>
+              <span id="name-${room._id}"><strong>Name: </strong> ${room.name}</span>
+              <span id="area-${room._id}"><strong>Area: </strong> ${room.area}</span>
+              <button class="btn btn-danger" onclick="DOMManager.deleteRoom('${house._id}','${room._id}')">Delete Room</button>`
+          );
+        }
+  
     }
   }
 }
