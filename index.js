@@ -45,8 +45,7 @@ class HouseService {
   static deleteHouse(id) {
     return $.ajax({
       url: this.url + `/${id}`,
-      type: 'DELETE',
-
+      type: 'DELETE'
     });
   }
 }
@@ -56,6 +55,14 @@ class DOMManager {
 
   static getALLHouses() {
     HouseService.getALLHouses().then(houses => this.render(houses));
+  }
+
+  static createHouse(name) {
+    HouseService.createHouse(new house(name))
+    .then(() => {
+      return HouseService.getALLHouses();
+    })
+    .then((houses) => this.render(houses));
   }
 
   static deleteHouse(id) {
@@ -74,7 +81,7 @@ class DOMManager {
         .then(() => {
           return HouseService.getALLHouses();
         })
-        .then((house) => this.render(houses));
+        .then((houses) => this.render(houses));
       }
     }
   }
@@ -90,11 +97,35 @@ class DOMManager {
           <button class = "btn btn-danger" onclick="DOMManager.deleteHouse('${house._id}')">Delete</button>
           </div>
           </div>
-          `
-      );
+          <div class="card-body">
+              <div class="card">
+                <div class="row">
+                  <div-class="col-sm">
+                    <input type="text" id="${house._id}-room-name" class="form-control" placeholder="Room Name">
+                  </div>
+                  <div class="col-sm">
+                    <input type="text" id="${house._id}-room-area" class="form-control" placeholder="Room Area">
+                  </div>
+                </div>
+                <button id="${house._id}-new-room" onclick="DOMManager.addRoom('${house._id}')" class="btn btn-primary form-control">Add</button>
+              </div><br>`
+              );
+      for (let room of house.rooms){
+        $(`#${house._id}`).find('card-body').append(
+          `<p>
+            <span id= "name-${room._id}"><strong>Name: </strong> ${room.name}</span>
+            <span id= "area-${room._id}"><strong>Area: </strong> ${room.area}</span>
+            <button class="btn btn-danger" onclick="DOMManager.deleteRoom('${house._id}', '${room._id}')">Delete Room</button>`
+        );
+      }
     }
   }
+
 }
 
+$('#create-new-house').click(() => {
+  DOMManager.createHouse($('#new-house-name').val());
+  $('#new-house-name').val('');
+});
 
-DOMManager.getALLHouses();
+DOMManager.getAllHouses();
