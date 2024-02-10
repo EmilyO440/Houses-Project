@@ -52,11 +52,18 @@ class HouseService {
 }
 
 class DOMManager {
-
   static houses;
 
   static getALLHouses() {
     HouseService.getALLHouses().then(houses => this.render(houses));
+  }
+
+  static createHouse(name) {
+    HouseService.createHouse(new House(name))
+    .then(() => {
+      return HouseService.getALLHouses();
+    })
+    .then((houses) => this.render(houses));
   }
 
   static deleteHouse(id) {
@@ -105,5 +112,10 @@ class DOMManager {
   }
 }
 
+$('#create-new-house').click(() => {
+  DOMManager.createHouse($('#new-house-name').val());
+  $('new-house-name').val('');
+
+});
 
 DOMManager.getALLHouses();
